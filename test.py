@@ -32,6 +32,7 @@ for file in dirs:
        text.pop(1)
        print("開始刪除")
        f.truncate(0)
+       f.seek(0)
        n=len(text)
        print('現在長度',n)
        for i in range(0,n):
