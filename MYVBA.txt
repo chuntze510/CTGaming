@@ -1,0 +1,25 @@
+Sub fuse()
+Dim main_table As Workbook
+Dim fuse_table As Workbook
+Dim tracker As Workbook
+Dim a, b, count, count2 As Integer
+Set fuse_table = Workbooks.Open("C:\Users\user\Desktop\fuse.xlsx")
+fuse_table.Sheets("copyfuse").UsedRange.Copy
+Set main_table = ThisWorkbook
+main_table.Sheets("fuse").Activate
+        ActiveSheet.Range("A1").Select
+        ActiveSheet.Paste
+count = main_table.Sheets("fuse").UsedRange.Rows.count
+count2 = main_table.Sheets("tracker").UsedRange.Rows.count
+
+
+For a = 2 To count
+    For b = 2 To count2
+    If (main_table.Sheets("fuse").Cells(a, 3) = "skip") And (main_table.Sheets("fuse").Cells(a, 1) = main_table.Sheets("tracker").Cells(b, 1)) Then
+        If (main_table.Sheets("tracker").Cells(b, 3) = "N") Then
+            Debug.Print (main_table.Sheets("tracker").Cells(b, 1) & "與tracker table不符 請注意!!!")
+        End If
+    End If
+    Next b
+Next a
+End Sub
