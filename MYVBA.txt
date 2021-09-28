@@ -23,3 +23,10 @@ For a = 2 To count
     Next b
 Next a
 End Sub
+
+
+
+ Debug.Print (Mid(main_table.Sheets("fuse").Cells(a, 4), 10, 13))
+  If (Mid(main_table.Sheets("fuse").Cells(a, 4), 10, 13) <> "V01G") Then
+  Debug.Print (main_table.Sheets("fuse").Cells(a, 4))
+    If (Mid(main_table.Sheets("fuse").Cells(a, 4), 1, 6) = 201405) Or (Mid(main_table.Sheets("fuse").Cells(a, 4), 1, 6) = 201408) Then
