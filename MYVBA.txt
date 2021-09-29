@@ -30,3 +30,4 @@ End Sub
   If (Mid(main_table.Sheets("fuse").Cells(a, 4), 10, 13) <> "V01G") Then
   Debug.Print (main_table.Sheets("fuse").Cells(a, 4))
     If (Mid(main_table.Sheets("fuse").Cells(a, 4), 1, 6) = 201405) Or (Mid(main_table.Sheets("fuse").Cells(a, 4), 1, 6) = 201408) Then
+Worksheets("fuse").Range("F1" & ":" & "F" & i).RemoveDuplicates Columns:=1, Header:=xlNo
