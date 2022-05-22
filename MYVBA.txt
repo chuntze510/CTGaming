@@ -31,3 +31,131 @@ End Sub
   Debug.Print (main_table.Sheets("fuse").Cells(a, 4))
     If (Mid(main_table.Sheets("fuse").Cells(a, 4), 1, 6) = 201405) Or (Mid(main_table.Sheets("fuse").Cells(a, 4), 1, 6) = 201408) Then
 Worksheets("fuse").Range("F1" & ":" & "F" & i).RemoveDuplicates Columns:=1, Header:=xlNo
+
+
+
+
+
+
+
+
+'高中作業
+Sub dttcheck()
+Dim i, j, k As Integer
+Dim touchdown As Integer
+
+touchdown = 0
+notfistflag = 0
+Count = Worksheets("DTT").Cells(Rows.Count, 1).End(xlUp).Row
+For i = 2 To Count
+
+    '找出bad找出來,若是bad填F
+    
+    If (Worksheets("DTT").Cells(i, 3) <> 1) Then
+    Worksheets("DTT").Cells(i, 8) = "F"
+    End If
+
+
+
+    If (Worksheets("DTT").Cells(i, 4) <> Worksheets("DTT").Cells(i + 1, 4)) Then
+        notfistflag = notfistflag + 1
+        'touchdown計算
+        touchdown = touchdown + 1
+        Worksheets("DTT").Cells(i, 6) = touchdown
+   
+        '如果是第一個touchdown 排除計算
+        If (notfistflag = 1) Then
+            Worksheets("DTT").Cells(i, 7) = "not use"
+        End If
+        
+         '不是第一個touchdown 開始計算
+        
+        If (notfistflag <> 1) Then
+            
+            
+            '尋找到這個touch down裡面有沒有F的,有的話flag=1,就不使用
+            For failcount = firstsite To i
+                If (Worksheets("DTT").Cells(failcount, 8) = "F") Then
+                badbinflag = 1
+                End If
+            Next failcount
+            
+            '有bad不使用
+            If (badbinflag = 1) Then
+                Worksheets("DTT").Cells(i, 7) = "not use"
+                Worksheets("DTT").Cells(i, 7).Interior.Color = RGB(250, 0, 0)
+            '計算enable幾個site
+            Else
+                Worksheets("DTT").Cells(i, 7) = i + 1 - firstsite
+            End If
+            '預設為all good die
+            badbinflag = 0
+        End If
+        
+        '下一個開始計算的touchdown 第一個touchdown忽略
+        firstsite = i + 1
+
+
+    End If
+    
+Next i
+
+
+
+End Sub
+
+Sub countTTD()
+
+Count2 = Worksheets("DTT").Cells(Rows.Count, 1).End(xlUp).Row
+Set mySITE = Sheets("DTT").Range("E1:E1000")
+Maxsite = WorksheetFunction.Max(mySITE)
+'建立空的list for time跟次數'
+Dim site(20) As Integer
+Dim sitecount(20) As Integer
+
+
+
+
+'開始計算平均的TTD time
+
+For x = 2 To Count2
+
+    '去掉空白的
+    If (Worksheets("DTT").Cells(x, 7) <> "" Or Worksheets("DTT").Cells(x, 7) <> "not use") Then
+    
+    For z = 1 To Maxsite
+    
+    '掃描有的site如果有的話丟到list裡面
+    
+        If (Worksheets("DTT").Cells(x, 7) = z) Then
+    
+            site(z) = site(z) + Worksheets("DTT").Cells(x, 4)
+            sitecount(z) = sitecount(z) + 1
+    
+        End If
+       
+    
+    Next z
+    
+
+
+    
+    End If
+    
+Next x
+
+'最後的TTD
+
+For tdd = 1 To Maxsite
+
+If (site(tdd) <> 0) Then
+Worksheets("DTT").Cells(tdd + 1, 10) = site(tdd) / sitecount(tdd)
+
+End If
+
+
+
+Next
+
+
+End Sub
